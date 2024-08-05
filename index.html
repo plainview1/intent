@@ -1,23 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Test Email Links</title>
+  <title>Open Mail</title>
+  <script>
+    function getMobileOperatingSystem() {
+      var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+      if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        return 'iOS';
+      }
+
+      if (/android/i.test(userAgent)) {
+        return 'Android';
+      }
+
+      return 'unknown';
+    }
+
+    window.onload = function() {
+      var os = getMobileOperatingSystem();
+      var mailLink = document.getElementById('mail-link');
+
+      if (os === 'iOS') {
+        mailLink.href = 'message://';
+        mailLink.innerText = 'Open Mail App (iOS)';
+      } else if (os === 'Android') {
+        mailLink.href = 'intent://#Intent;package=com.google.android.gm;end';
+        mailLink.innerText = 'Open Gmail (Android)';
+      } else {
+        mailLink.href = 'mailto:';
+        mailLink.innerText = 'Open Mail App';
+      }
+    };
+  </script>
 </head>
 <body>
-    <h1>Test Email Links</h1>
-        <!-- Link to open the mail app with a new email -->
-        <a href="message://">message test</a><br><br>
-
-    <!-- Link to open the mail app with a new email -->
-    <a href="mailto:">Open Default Mail App</a><br><br>
-    
-    <!-- Link to open Gmail app (if installed) -->
-    <a href="googlegmail://">Open Gmail App</a><br><br>
-    
-    <!-- Link to open Outlook app (if installed) -->
-    <a href="ms-outlook://">Open Outlook App</a><br><br>
-    
-    <!-- Link to open Gmail app using intent on Android -->
-    <a href="intent://#Intent;package=com.google.android.gm;end">Open Gmail (Intent)</a>
+  <h1>Open Mail</h1>
+  <a id="mail-link" href="mailto:">Open Mail App</a>
 </body>
 </html>
